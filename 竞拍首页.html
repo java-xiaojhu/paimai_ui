@@ -109,8 +109,8 @@
 						<el-col :span="6">
 							<div class="grid-content bg-purple">
 								<el-menu class="el-menu-demo" mode="horizontal">
-									<el-menu-item index="1">登录</el-menu-item>
-									<el-menu-item index="2">注销</el-menu-item>
+									<el-menu-item index="1" @click="showView('竞拍者登录.html')" v-if="user ==null">登录</el-menu-item>
+									<el-menu-item index="2" v-if="user != null">注销</el-menu-item>
 								</el-menu>
 							</div>
 						</el-col>
@@ -145,9 +145,9 @@
 								<span id="">交易成功列表</span>
 								<template>
 									<el-table :data="tableData" stripe style="width: 100%"  border>
-										<el-table-column prop="date" label="日期" width="180">
+										<el-table-column prop="date" label="日期">
 										</el-table-column>
-										<el-table-column prop="name" label="姓名" width="180">
+										<el-table-column prop="name" label="姓名">
 										</el-table-column>
 										<el-table-column prop="address" label="地址">
 										</el-table-column>
@@ -190,7 +190,8 @@
 					date: '2016-05-03',
 					name: '王小虎',
 					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				}],
+				user:JSON.parse(window.sessionStorage.getItem("user"))
 			},
 			methods: {
 				showView(url) {
