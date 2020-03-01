@@ -79,15 +79,15 @@
 	<body>
 		<div class="indexApp">
 			<el-container style='height:95vh; border: 1px solid #eee'>
-				<el-header>
+				<el-header style='border-bottom: 1px solid #eee'>
 					<el-row :gutter="20" justify="center">
 						<el-col :span="6">
-							<div class="grid-content bg-purple"></div>
+							<el-link href="竞拍首页.html">在线拍卖系统</el-link>
 						</el-col>
 						<el-col :span="12">
 							<div class="grid-content bg-purple">
 								<el-menu class="el-menu-demo" mode="horizontal">
-									<el-menu-item index="3">今日拍卖</el-menu-item>
+									<el-menu-item index="3" @click="showView('拍卖品列表页.html')" >今日拍卖</el-menu-item>
 									<el-submenu index="2">
 										<template slot="title">拍卖类型</template>
 										<el-submenu index="2-1">
@@ -116,7 +116,7 @@
 						</el-col>
 					</el-row>
 				</el-header>
-				<el-main style="padding:0px 20px;">
+				<el-main style="padding:0px 20px; margin-top: 20px;">
 					<el-row :gutter="20" justify="center">
 						<el-col :span="3">
 							<div class="grid-content bg-purple"></div>
