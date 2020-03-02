@@ -25,7 +25,7 @@
 									<tr>
 										<td>描述:</td>
 										<td>{{auctionGoods}}</td>
-									</tr>								
+									</tr>
 									<tr>
 										<td>开始时间:</td>
 										<td>{{auctionGoods}}</td>
@@ -40,24 +40,27 @@
 									</tr>
 								</tbody>
 							</table>
-							<el-col :span="2">
+						</el-col>
+						<el-col :span="2">
 
-							</el-col>
-							<el-col :span="8">
-								<div class="grid-content bg-purple"></div>
-							</el-col>
+						</el-col>
+						<el-col :span="8">
+							<el-image style="width: 100%; height: 183px" :src="imgurl" fit="scale-down"></el-image>											
+						</el-col>
 					</el-row>
-					</el-col>
-					<el-col :span="3">
-						<div class="grid-content bg-purple"></div>
-					</el-col>
+				</el-col>
+				<el-col :span="3">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
 			</el-row>
 		</div>
 	</body>
 	<script>
 		var auctionPageApp = new Vue({
 			data: {
-				auctionGoods: JSON.parse(window.sessionStorage.getItem("goods"));
+				//JSON.parse(window.sessionStorage.getItem("goods"))
+				auctionGoods:1 ,
+				imgurl:"/paimai_ui/images/ad20.jpg"
 			},
 			methods: {},
 			mounted() {}
