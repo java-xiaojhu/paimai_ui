@@ -1,187 +1,215 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>拍卖商品管理页</title>
-<link href="css/common.css" rel="stylesheet" type="text/css" />
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-</head>
 
-<body>
-<div class="wrap">
-<!-- main begin-->
-  <div class="sale">
-    <h1 class="lf">在线拍卖系统</h1>
-    <div class="logout right"><a href="#" title="注销">注销</a></div>
-  </div>
-  <div class="forms">
-    <label for="name">名称</label>
-    <input name="" type="text" class="nwinput" id="name"/>
-    <label for="names">描述</label>
-    <input name="" type="text" id="names" class="nwinput"/>
-    <label for="time">开始时间</label>
-    <input name="" type="text" id="time" class="nwinput"/>
-    <label for="end-time">结束时间</label>
-    <input name="" type="text" id="end-time" class="nwinput" />
-    <label for="price">起拍价</label>
-    <input name="" type="text" id="price" class="nwinput" />
-    <input name="" type="button"  value="查询" class="spbg buttombg f14  sale-buttom"/>
-    <input type="button"  value="发布" class="spbg buttombg f14  sale-buttom buttomb"/>
-  </div>
-  <div class="items">
-      <ul class="rows even strong">
-        <li>名称</li>
-        <li class="list-wd">描述</li>
-        <li>开始时间</li>
-        <li>结束时间</li>
-        <li>起拍价</li>
-        <li class="borderno">操作</li>
-      </ul>
-      <ul class="rows">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍" onclick="dele();">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows even">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows even">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-           <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows even">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows even">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <ul class="rows even">
-        <li><a href="国书" title="">国书</a></li>
-        <li class="list-wd">明国藏书</li>
-        <li>2010-01-20 12:30:30</li>
-        <li>2010-09-08 12:30:30</li>
-        <li>2,000</li>
-        <li class="borderno red">
-           <a href="#" title="竞拍">修改</a>|
-          <a href="#" title="竞拍" onclick="abc();">删除</a>
-        </li>
-      </ul>
-      <div class="page">
-        <a href="#" title="">首页</a>
-        <a href="#" title="">上一页</a>
-        <span class="red">前5页</span>
-        <a href="#" title="">1</a> 
-        <a href="#" title="">2</a> 
-        <a href="#" title="">3</a> 
-        <a href="#" title="">4</a>
-        <a href="#" title="">5</a> 
-        <a href="#" title="">下一页</a>
-        <a href="#" title="">尾页</a> 
-      </div>
-  </div>
-  <script>
-   function abc(){
-	   
-	   if(confirm("你真的确认要删除吗？请确认")){
-	    
-		   return true;
-		 }
-		 else{
-			 return false;
-			 }
-			 
-	   };
-	   function dele(){
-		   if(confirm("你真的确认要修改吗？请确认")){
-			   return true;
-			   }
-			   else{
-				   return false;
-				   }
-		   }
-  </script>
-<!-- main end-->
-</div>
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>拍卖品列表页</title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			.el-aside {
+				background-color: #D3DCE6;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row {}
+			
+			.el-col {
+				border-radius: 4px;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #FFF;
+			}
+			/**
+			 * 卡片的样式
+			 */
+			
+			.el-carousel__item h3 {
+				color: #475669;
+				font-size: 14px;
+				opacity: 0.75;
+				line-height: 200px;
+				margin: 0;
+			}
+			
+			.el-carousel__item:nth-child(2n) {
+				background-color: #99a9bf;
+			}
+			
+			.el-carousel__item:nth-child(2n+1) {
+				background-color: #d3dce6;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+	</head>
+
+	<body>
+		<div class="managementApp" style="margin-top: 20px;">
+			<el-row :gutter="20" justify="center">
+				<el-col :span="3">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+				<el-col :span="18">
+					<el-form ref="form" :model="sizeForm" label-width="70px" size="mini">
+						<el-row :gutter="20" justify="center">
+							<el-col :span="4">
+								<el-form-item label="名称">
+									<el-input v-model="sizeForm.name"></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="4">
+								<el-form-item label="描述">
+									<el-input v-model="sizeForm.describe"></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="9">
+								<el-form-item label="活动时间">
+									<el-col :span="11">
+										<el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 100%;"></el-date-picker>
+									</el-col>
+									<el-col class="line" :span="2">-</el-col>
+									<el-col :span="11">
+										<el-time-picker placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>
+									</el-col>
+								</el-form-item>
+							</el-col>
+							<el-col :span="5">
+								<el-form-item label="起拍价">
+									<el-input v-model="sizeForm.startingPrice "></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="2">
+								<el-form-item size="mini">
+									<el-button type="primary" @click="onSubmit">查询</el-button>
+								</el-form-item>
+							</el-col>
+						</el-row>
+					</el-form>
+				</el-col>
+				<el-col :span="3">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+			</el-row>
+			<el-row :gutter="20" justify="center">
+				<el-col :span="3">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+				<el-col :span="19">
+					<div class="">
+						<template>
+							<el-table :data="AuctionData" stripe style="width: 100%" border>
+								<el-table-column prop="date" label="日期">
+								</el-table-column>
+								<el-table-column prop="name" label="姓名">
+								</el-table-column>
+								<el-table-column prop="address" label="地址">
+								</el-table-column>
+								<el-table-column label="操作">
+									<template slot-scope="temp">
+										<el-button type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+										<el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+									</template>
+								</el-table-column>
+							</el-table>
+						</template>
+						<template>
+							<div class="block">
+								<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="100" layout="prev, pager, next, jumper" :total="1000">
+								</el-pagination>
+							</div>
+						</template>
+					</div>
+				</el-col>
+				<el-col :span="2">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+			</el-row>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js" ></script>
+	<script>
+		var managementApp = new Vue({
+			data: {
+				sizeForm: {
+					name: '',
+					date1: '',
+					date2: '',
+					describe: '',
+					startingPrice: '',
+					currentPage4: 3
+				},
+				AuctionData: [{
+					date: '2016-05-02',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1518 弄'
+				}, {
+					date: '2016-05-04',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1517 弄'
+				}, {
+					date: '2016-05-01',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1519 弄'
+				}, {
+					date: '2016-05-03',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1516 弄'
+				}]
+			},
+			methods: {
+				onSubmit() {
+					console.log('submit!');
+				},
+				goAuction(url, goods) {
+					window.sessionStorage.setItem("goods", JSON.stringify(goods))
+					indexApp.showView(url);
+				},
+				handleSizeChange(val) {
+					console.log(`每页 ${val} 条`);
+				},
+				handleCurrentChange(val) {
+					console.log(`当前页: ${val}`);
+				}
+			},
+			mounted() {
+
+			},
+		}).$mount(".managementApp");
+	</script>
+
 </html>
