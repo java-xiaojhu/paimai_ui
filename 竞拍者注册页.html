@@ -4,68 +4,194 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>竞拍者注册页</title>
-		<link href="css/common.css" rel="stylesheet" type="text/css" />
-		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			.el-aside {
+				background-color: #D3DCE6;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row {}
+			
+			.el-col {
+				border-radius: 4px;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #FFF;
+			}
+			/**
+			 * 卡片的样式
+			 */
+			
+			.el-carousel__item h3 {
+				color: #475669;
+				font-size: 14px;
+				opacity: 0.75;
+				line-height: 200px;
+				margin: 0;
+			}
+			
+			.el-carousel__item:nth-child(2n) {
+				background-color: #99a9bf;
+			}
+			
+			.el-carousel__item:nth-child(2n+1) {
+				background-color: #d3dce6;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
 	</head>
 
 	<body>
-		<div class="wrap">
-			<!-- main begin-->
-			<div class="zclf login logns">
-				<h1 class="blue">用户注册</h1>
-				<dl>
-					<dd>
-						<label> <small>*</small>用户名</label>
-						<input type="text" class="inputh lf" value="" />
-						<div class="lf red laba">用户名要求不低于6个字符</div>
-					</dd>
-					<dd>
-						<label> <small>*</small>密码</label>
-						<input type="text" class="inputh lf" value="" />
-						<div class="lf red laba">密码要求不低于6个字符</div>
-					</dd>
-					<dd>
-						<label> <small>*</small>身份证号</label>
-						<input type="text" class="inputh lf" value="" />
-						<div class="lf red laba">身份证号必填</div>
-					</dd>
-					<dd>
-						<label> <small>*</small>电话</label>
-						<input type="text" class="inputh lf" value="" />
-						<div class="lf red laba">电话号码必填</div>
-					</dd>
-					<dd>
-						<label> <small>*</small>住址</label>
-						<input type="text" class="inputh lf" value="" />
-					</dd>
-					<dd>
-						<label> <small>*</small>邮政编码</label>
-						<input type="text" class="inputh lf" value="" />
-					</dd>
-					<dd class="hegas">
-						<label> <small>*</small>验证码</label>
-						<input type="text" class="inputh inputs lf" value="" />
-						<span class="wordp lf"><img src="images/img2.jpg" width="96" height="27" alt="" /></span>
-						<span class="blues lf"><a href="" title="">看不清</a></span>
-					</dd>
-					<dd class="hegas">
-						<label>&nbsp;</label>
-						<input name="" type="checkbox" id="rem_u" />
-						<label for="rem_u" class="labels">我同意<span class="blues">《服务条款》</span></label>
-					</dd>
-					<dd class="hegas">
-						<label>&nbsp;</label>
-						<input name="" type="submit" value="立即注册" class="spbg buttombg buttombgs f14 lf" />
-					</dd>
-				</dl>
-			</div>
-			<!-- main end-->
-			<!-- footer begin-->
-
-		</div>
-		<!--footer end-->
-
+		<div class="jinpairegister">
+			<el-row :gutter="20" justify="center">
+				<el-col :span="8">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+				<el-col :span="8">
+					<h2>用户注册</h2>
+					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+						<el-form-item label="用户名" prop="name">
+							<el-input v-model="ruleForm.name"></el-input>
+						</el-form-item>
+						<el-form-item label="密码" prop="Upassword">
+							<el-input v-model="ruleForm.Upassword"></el-input>
+						</el-form-item>
+						<el-form-item label="身份证号" prop="UcID">
+							<el-input v-model="ruleForm.UcID"></el-input>
+						</el-form-item>
+						<el-form-item label="电话" prop="uphone">
+							<el-input v-model="ruleForm.uphone"></el-input>
+						</el-form-item>
+						<el-form-item label="住址" prop="address">
+							<el-input v-model="ruleForm.address"></el-input>
+						</el-form-item>
+						<el-form-item label="邮政编码" prop="postalCode">
+							<el-input v-model="ruleForm.postalCode"></el-input>
+						</el-form-item>
+						<el-form-item label="用户须知" prop="resource">
+							<el-checkbox v-model="ruleForm.resource" label="我同意《服务条款》" name="resource" style="color: deepskyblue;"></el-checkbox>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="submitForm('ruleForm')">立即注册</el-button>
+							<el-button @click="resetForm('ruleForm')">重置</el-button>
+						</el-form-item>
+					</el-form>
+				</el-col>
+				<el-col :span="8">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+			</el-row>
 		</div>
 	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script>
+		var jinpairegister = new Vue({
+			data: {
+				ruleForm: {
+					name: '',
+					Upassword: '',
+					UcID: '',
+					uphone: '',
+					resource: '',					
+				  postalCode:'',
+				  address:''
+				},
+				rules: {
+					name: [{
+							required: true,
+							message: '请输入活动名称',
+							trigger: 'blur'
+						},
+						{
+							min: 6,
+							max: 10,
+							message: '用户名字符长度在 6到 10 个字符',
+							trigger: 'blur'
+						}
+					],
+					Upassword: [{
+							required: true,
+							message: '请输入密码',
+							trigger: 'blur'
+						},
+						{
+							min: 6,
+							max: 10,
+							message: '密码字符长度在 6到 10 个字符',
+							trigger: 'blur'
+						}
+					],
+					UcID: [{
+						required: true,
+						message: '身份证号必填',
+						trigger: 'blur'
+					}],
+					uphone: [{
+						required: true,
+						message: '电话号码必填',
+						trigger: 'blur'
+					}],
+					resource: [{
+						required: true,
+						message: '请同意服务条款',
+						trigger: 'change'
+					}]
+				}
+			},
+			methods: {
+				submitForm(formName) {
+					this.$refs[formName].validate((valid) => {
+						if(valid) {
+							alert('submit!');
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+				},
+				resetForm(formName) {
+					this.$refs[formName].resetFields();
+				}
+			},
+			mounted() {}
+		}).$mount(".jinpairegister");
+	</script>
 
 </html>
