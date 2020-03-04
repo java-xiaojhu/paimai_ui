@@ -67,6 +67,8 @@
 				background-color: #99a9bf;
 			}
 			
+			
+			
 			.el-carousel__item:nth-child(2n+1) {
 				background-color: #d3dce6;
 			}
@@ -140,8 +142,8 @@
 								</el-table-column>
 								<el-table-column label="操作">
 									<template slot-scope="temp">
-										<el-button type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-										<el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+										<el-button type="primary" icon="el-icon-edit" circle size="mini" @click="modifyPage(temp.row)"></el-button>
+										<el-button type="danger" icon="el-icon-delete" circle size="mini" @click=""></el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -158,20 +160,24 @@
 					<div class="grid-content bg-purple"></div>
 				</el-col>
 			</el-row>
+			<el-dialog @opened="handlerOpen" ref="modifdialog" title="修改商品页" :visible.sync="isShow2" width="50%" :before-close="handleClose2" center>
+				<div id="cnt">修改商品页</div>
+			</el-dialog>
 		</div>
 	</body>
 	<script type="text/javascript" src="js/index.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js" ></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script>
 		var managementApp = new Vue({
 			data: {
+				isShow2: false,
+				currentPage3: 5,
 				sizeForm: {
 					name: '',
 					date1: '',
 					date2: '',
 					describe: '',
-					startingPrice: '',
-					currentPage4: 3
+					startingPrice: ''
 				},
 				AuctionData: [{
 					date: '2016-05-02',
@@ -204,6 +210,19 @@
 				},
 				handleCurrentChange(val) {
 					console.log(`当前页: ${val}`);
+				},
+				handleClose2(done) {
+					done();
+				},
+				modifyPage(good) {
+					this.isShow2 = true;
+					window.sessionStorage.setItem("good", JSON.stringify(good));
+				},
+				reomveGood(goodid) {
+					console.log(goodid)
+				},
+				handlerOpen() {
+					$("#cnt").load('修改商品页.html'); //ajax读取页面
 				}
 			},
 			mounted() {
