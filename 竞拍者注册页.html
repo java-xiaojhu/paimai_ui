@@ -4,37 +4,109 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>竞拍者注册页</title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			.el-aside {
+				background-color: #D3DCE6;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row {}
+			
+			.el-col {
+				border-radius: 4px;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #FFF;
+			}
+			/**
+			 * 卡片的样式
+			 */
+			
+			.el-carousel__item h3 {
+				color: #475669;
+				font-size: 14px;
+				opacity: 0.75;
+				line-height: 200px;
+				margin: 0;
+			}
+			
+			.el-carousel__item:nth-child(2n) {
+				background-color: #99a9bf;
+			}
+			
+			.el-carousel__item:nth-child(2n+1) {
+				background-color: #d3dce6;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
 	</head>
 
 	<body>
-		<div class="jinpairegister">
+		<div class="jinpairegister" style="margin-top: 100px;">
 			<el-row :gutter="20" justify="center">
 				<el-col :span="8">
 					<div class="grid-content bg-purple"></div>
 				</el-col>
 				<el-col :span="8">
 					<h2>用户注册</h2>
-					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-						<el-form-item label="用户名" prop="name">
-							<el-input v-model="ruleForm.name"></el-input>
+					<el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+						<el-form-item label="用户名" prop="userName">
+							<el-input v-model="user.userName"></el-input>
 						</el-form-item>
-						<el-form-item label="密码" prop="Upassword">
-							<el-input v-model="ruleForm.Upassword"></el-input>
+						<el-form-item label="密码" prop="userPassword">
+							<el-input v-model="user.userPassword"></el-input>
 						</el-form-item>
-						<el-form-item label="身份证号" prop="UcID">
-							<el-input v-model="ruleForm.UcID"></el-input>
+						<el-form-item label="身份证号" prop="userCardNo">
+							<el-input v-model="user.userCardNo"></el-input>
 						</el-form-item>
-						<el-form-item label="电话" prop="uphone">
-							<el-input v-model="ruleForm.uphone"></el-input>
+						<el-form-item label="电话" prop="userTel">
+							<el-input v-model="user.userTel"></el-input>
 						</el-form-item>
-						<el-form-item label="住址" prop="address">
-							<el-input v-model="ruleForm.address"></el-input>
+						<el-form-item label="住址" prop="userAddress">
+							<el-input v-model="user.userAddress"></el-input>
 						</el-form-item>
-						<el-form-item label="邮政编码" prop="postalCode">
-							<el-input v-model="ruleForm.postalCode"></el-input>
+						<el-form-item label="邮政编码" prop="userPostNumber">
+							<el-input v-model="user.userPostNumber"></el-input>
 						</el-form-item>
 						<el-form-item label="用户须知" prop="resource">
-							<el-checkbox v-model="ruleForm.resource" label="我同意《服务条款》" name="resource" style="color: deepskyblue;"></el-checkbox>
+							<el-checkbox v-model="user.resource" label="我同意《服务条款》" name="resource" style="color: deepskyblue;"></el-checkbox>
 						</el-form-item>
 						<el-form-item>
 							<el-button type="primary" @click="submitForm('ruleForm')">立即注册</el-button>
@@ -48,49 +120,64 @@
 			</el-row>
 		</div>
 	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script>
+		// ````````````````
 		var jinpairegister = new Vue({
 			data: {
-				ruleForm: {
-					name: '',
-					Upassword: '',
-					UcID: '',
-					uphone: '',
-					resource: '',					
-				  postalCode:'',
-				  address:''
+				user: {
+					userName: '',
+					userPassword: '',
+					userCardNo: '',
+					userTel: '',
+					userAddress: '',
+					userPostNumber: '',
+					resource: '',
 				},
 				rules: {
-					name: [{
+					userName: [{
 							required: true,
-							message: '请输入活动名称',
+							message: '请输入用户名称',
 							trigger: 'blur'
 						},
 						{
-							min: 6,
+							min: 1,
 							max: 10,
-							message: '用户名字符长度在 6到 10 个字符',
+							message: '用户名字符长度在 1到 10 个字符',
 							trigger: 'blur'
+						},
+						{
+							validator(rule, value, callback) {
+								$.getJSON(`http://127.0.0.1:8080/api/Auctionusers/${value}`, (data) => {
+									if(data.code == "200") {
+										callback();
+									} else {
+										callback(new Error(`${data.msg}`));
+									}
+								});
+							},
+							trigger: 'blur',
 						}
 					],
-					Upassword: [{
+					userPassword: [{
 							required: true,
 							message: '请输入密码',
 							trigger: 'blur'
 						},
 						{
-							min: 6,
-							max: 10,
-							message: '密码字符长度在 6到 10 个字符',
+							min: 3,
+							max: 6,
+							message: '密码字符长度在 3到 6 个字符',
 							trigger: 'blur'
 						}
 					],
-					UcID: [{
+					userCardNo: [{
 						required: true,
 						message: '身份证号必填',
 						trigger: 'blur'
 					}],
-					uphone: [{
+					userTel: [{
 						required: true,
 						message: '电话号码必填',
 						trigger: 'blur'
@@ -104,9 +191,32 @@
 			},
 			methods: {
 				submitForm(formName) {
+					let _this = this;
 					this.$refs[formName].validate((valid) => {
 						if(valid) {
-							alert('submit!');
+							$.ajax({
+								type: "post",
+								url: "http://127.0.0.1:8080/api/Auctionusers/res/Auctionuser",
+								data: JSON.stringify(_this.user),
+								contentType: "application/json",
+								dataType: "JSON",
+								success: function(data) {
+									console.log(data);
+									if(data.code == "200") {
+										_this.$message({
+											message: data.msg,
+											type: 'success'
+										});
+										window.sessionStorage.setItem("user", data.user);
+										location.href = `${data.dizhi}`;
+									} else if(data.code == "300") {
+										_this.$message({
+											message: data.msg,
+											type: 'error'
+										});
+									}
+								}
+							});
 						} else {
 							console.log('error submit!!');
 							return false;

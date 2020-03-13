@@ -20,23 +20,27 @@
 								<tbody>
 									<tr>
 										<td>名称:</td>
-										<td>{{auctionGoods}}</td>
+										<td>{{auctionGoods.auctionname}}</td>
 									</tr>
 									<tr>
 										<td>描述:</td>
-										<td>{{auctionGoods}}</td>
+										<td>{{auctionGoods.auctiondesc}}</td>
 									</tr>
 									<tr>
 										<td>开始时间:</td>
-										<td>{{auctionGoods}}</td>
+										<td>{{auctionGoods.auctionstarttime}}</td>
 									</tr>
 									<tr>
 										<td>结束时间:</td>
-										<td>{{auctionGoods}}</td>
+										<td>{{auctionGoods.auctionendtime}}</td>
 									</tr>
 									<tr>
 										<td>起拍价:</td>
-										<td>{{auctionGoods}}</td>
+										<td>{{auctionGoods.auctionstartprice}}</td>
+									</tr>
+									<tr>
+										<td>出价:</td>
+										<td>{{auctionGoods.auctionupset}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -45,7 +49,7 @@
 
 						</el-col>
 						<el-col :span="8">
-							<el-image style="width: 100%; height: 183px" :src="imgurl" fit="scale-down"></el-image>
+							<el-image style="width: 100%; height: 219px" :src="auctionGoods.auctionpic" fit="scale-down"></el-image>
 						</el-col>
 					</el-row>
 				</el-col>
@@ -58,15 +62,15 @@
 					<div class="grid-content bg-purple"></div>
 				</el-col>
 				<el-col :span="18" style="border:solid 1px black; border-radius: 0px;">
-					<el-form ref="form" :model="sizeForm" label-width="70px" size="mini">
+					<el-form ref="auction" :model="Auction" :rules="goodsRules" label-width="70px" size="mini">
 						<el-row :gutter="20" justify="center" style="margin-top: 8px;">
 							<el-col :span="6">
-								<el-form-item label="出价:">
-									<el-input v-model="sizeForm.name"></el-input>
+								<el-form-item label="出价:" prop="auctionprice">
+									<el-input v-model.number="Auction.auctionprice"></el-input>
 								</el-form-item>
 							</el-col>
 							<el-col :span="2">
-								<el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+								<el-button type="primary" @click="submitForm('auction')" size="mini">竞拍</el-button>
 							</el-col>
 							<el-col :span="16">
 							</el-col>
@@ -85,12 +89,12 @@
 					<div class="">
 						<span id="">出价记录</span>
 						<template>
-							<el-table :data="tableData" stripe style="width: 100%" border>
-								<el-table-column prop="date" label="日期">
+							<el-table :data="goodRecords" stripe style="width: 100%" border>
+								<el-table-column prop="auctiontime" label="竞拍时间">
 								</el-table-column>
-								<el-table-column prop="name" label="姓名">
+								<el-table-column prop="auctionprice" label="竞拍价格">
 								</el-table-column>
-								<el-table-column prop="address" label="地址">
+								<el-table-column prop="username" label="竞拍人">
 								</el-table-column>
 							</el-table>
 						</template>
@@ -106,35 +110,103 @@
 		var auctionPageApp = new Vue({
 			data: {
 				//JSON.parse(window.sessionStorage.getItem("goods"))
-				auctionGoods: 1,
-				imgurl: "/paimai_ui/images/ad20.jpg",
-				sizeForm: {
-					name: ''
+				auctionGoods: JSON.parse(window.sessionStorage.getItem("jinpai")),
+				user: JSON.parse(window.sessionStorage.getItem("user")),
+				goodRecords: [],
+				maxpaimaiprice: 0,
+				Auction: {
+					auctionprice: '',
+					userid: '',
+					auctionid: ''
 				},
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				goodsRules: {
+					auctionprice: [{
+						required: true,
+						message: '请输入竞拍价',
+						trigger: 'blur'
+					}, {
+						type: 'number',
+						message: '必须为数字',
+						trigger: 'blur'
+					}, {
+						//自定义验证
+						validator(rule, value, callback) {
+							console.log(auctionPageApp.auctionGoods.auctionupset)
+							if(parseFloat(value) < parseFloat(auctionPageApp.auctionGoods.auctionupset)) {
+								callback(new Error(`每次竞拍不能低于最低出价`));
+							} else if(parseFloat(value) <= parseFloat(auctionPageApp.maxpaimaiprice)) {
+								callback(new Error(`每次竞拍不能低于最高者的出价`));
+							} else {
+								callback();
+							}
+						},
+						trigger: 'blur',
+					}]
+				},
 			},
 			methods: {
-				onSubmit() {
-					console.log('submit!');
+				submitForm(formName) {
+					let _this = this;
+					console.log(this.user)
+					if(this.user == null) {
+						alert("请先登录")
+						return false;
+					}
+					var sta=new Date(this.auctionGoods.auctionstarttime.replace(/-/g, "/"));
+					if(sta> new Date()) {
+						_this.$message({
+							message:`拍卖未开始`,
+							type: 'error'
+						});
+						return false;
+					}
+					this.Auction.userid = this.user.userId;
+					this.Auction.auctionid = this.auctionGoods.auctionId;
+					console.log(_this.Auction)
+					this.$refs[formName].validate((valid) => {
+						if(valid) {
+							$.ajax({
+								type: "post",
+								url: "http://127.0.0.1:8080/api/AuctionRecords/Auctionrecord",
+								data: JSON.stringify(this.Auction),
+								contentType: "application/json",
+								dataType: "JSON",
+								success: function(data) {
+									console.log(data);
+									if(data.code == "200") {
+										_this.$message({
+											message: data.msg,
+											type: 'success'
+										});
+										_this.goToRecord(_this.auctionGoods.auctionId);
+									} else if(data.code == "300") {
+										_this.$message({
+											message: data.msg,
+											type: 'error'
+										});
+									}
+								}
+							});
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+				},
+				goToRecord(id) {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/AuctionRecords/Auctionrecord/${id}`, (data) => {
+						if(data.length > 0) {
+							_this.maxpaimaiprice = data[0].auctionprice;
+						}
+						console.log(data)
+						_this.goodRecords = data;
+					});
 				}
 			},
-			mounted() {}
+			mounted() {
+				this.goToRecord(this.auctionGoods.auctionId);
+			}
 		}).$mount(".auctionPageApp")
 	</script>
 

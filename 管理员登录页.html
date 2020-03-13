@@ -3,14 +3,40 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>竞拍者登录</title>
-		<!--<style>
-			.el-row {
-				margin-bottom: 20px;
-				&:last-child {
-					margin-bottom: 0;
-				}
+		<title>管理员登录页</title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
 			}
+			
+			.el-aside {
+				background-color: #D3DCE6;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row {}
 			
 			.el-col {
 				border-radius: 4px;
@@ -25,11 +51,35 @@
 				padding: 10px 0;
 				background-color: #FFF;
 			}
-		</style>-->
+			/**
+			 * 卡片的样式
+			 */
+			
+			.el-carousel__item h3 {
+				color: #475669;
+				font-size: 14px;
+				opacity: 0.75;
+				line-height: 200px;
+				margin: 0;
+			}
+			
+			.el-carousel__item:nth-child(2n) {
+				background-color: #99a9bf;
+			}
+			
+			.el-carousel__item:nth-child(2n+1) {
+				background-color: #d3dce6;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
 	</head>
 
 	<body>
-		<div class="loginApp">
+		<div class="loginApp" style="margin-top: 200px;">
 			<el-row :gutter="20" justify="center" style='height:95vh'>
 				<el-col :span="8">
 					<div class="grid-content bg-purple"></div>
@@ -42,14 +92,13 @@
 								<el-input v-model="user.pname"></el-input>
 							</el-col>
 						</el-form-item>
-						<el-form-item label="密 码" prop="password">
+						<el-form-item label="密 码" prop="ppassword">
 							<el-col :span="24">
-								<el-input v-model="user.password"></el-input>
+								<el-input v-model="user.ppassword"></el-input>
 							</el-col>
 						</el-form-item>
 						<el-form-item>
-							<el-button type="primary">登录</el-button>
-							<el-button type="danger">注册</el-button>
+							<el-button type="primary" @click="ulogin">登录</el-button>
 						</el-form-item>
 					</el-form>
 				</el-col>
@@ -60,12 +109,14 @@
 
 		</div>
 	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script>
 		var loginApp = new Vue({
 			data: {
 				user: {
 					pname: '',
-					password: ''
+					ppassword: ''
 				},
 				userRules: {
 					pname: [{
@@ -73,7 +124,7 @@
 						message: '用户名不能为空',
 						trigger: 'blur' //移除触发
 					}],
-					password: [{
+					ppassword: [{
 							required: true,
 							message: '请输入密码',
 							trigger: 'blur'
@@ -88,9 +139,37 @@
 
 				}
 			},
-			methods: {},
-			mounted() {
-
+			methods: {
+				ulogin() {
+					let _this = this;
+					this.$refs['userForm'].validate(valid => {
+						if(valid) {
+							const loading = this.$loading({
+								lock: true,
+								text: '努力更新中....',
+								spinner: 'el-icon-loading',
+								background: 'rgba(0, 0, 0, 0.5)'
+							});
+							console.log(_this.user.pname, _this.user.ppassword)
+							$.getJSON(`http://127.0.0.1:8080/api/Auctionusers/login/${_this.user.pname}/${_this.user.ppassword}`, (data) => {
+								if(data.code == "200") {
+									console.log(data.user)
+									window.sessionStorage.setItem("user", data.user);
+									location.href = `拍卖商品管理页.html`;
+								} else if(data.code == "300") {
+									_this.$message({
+										type: 'error',
+										message: `${data.msg}`
+									});
+								}
+								loading.close(); //关闭加载块【非常重要】
+							});
+						} else {
+							//验证失败
+							this.$alert('请按格式正确填写信息', '系统提示');
+						}
+					});
+				}
 			}
 		}).$mount(".loginApp")
 	</script>

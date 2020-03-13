@@ -3,11 +3,9 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>查看竞拍结果</title>		
+		<title>查看竞拍结果</title>
 	</head>
-
 	<body>
-
 		<div class="findResultAtione">
 			<el-row :gutter="20" justify="center">
 				<el-col :span="3">
@@ -18,19 +16,27 @@
 						<span id="">拍卖结束的商品</span>
 						<template>
 							<el-table :data="dePte" stripe style="width: 100%" border>
-								<el-table-column prop="deptid" label="名称"></el-table-column>
-								<el-table-column prop="deptid" label="开始时间"></el-table-column>
-								<el-table-column prop="deptid" label="结束时间"></el-table-column>
-								<el-table-column prop="deptid" label="起拍价"></el-table-column>
-								<el-table-column prop="deptid" label="成交价"></el-table-column>
-								<el-table-column prop="deptid" label="买家"></el-table-column>
-								<el-table-column label="出家记录">
+								<el-table-column prop="auctionname" label="名称">
+								</el-table-column>
+								<el-table-column prop="auctionstarttime" label="开始时间">
+								</el-table-column>
+								<el-table-column prop="auctionendtime" label="结束时间">
+								</el-table-column>
+								<el-table-column prop="auctionstartprice" label="起拍价">
+								</el-table-column>
+								<el-table-column prop="auctionprice" label="成交价">
+								</el-table-column>
+								<el-table-column prop="username" label="买家">
+								</el-table-column>
+								<el-table-column label="竞拍记录">
 									<template slot-scope="temp">
-										<el-button size="mini" @click="deemps(temp.row.emps)">查看出价记录</el-button>
+										<el-button size="mini" @click="deemps(temp.row.auctionid)">查看出价记录</el-button>
 										<el-drawer title="参与竞拍人" :visible.sync="table" direction="btt" size="50%" ref="drawer">
 											<el-table :data="emps" border>
-												<el-table-column prop="empName" label="姓名"></el-table-column>
-												<el-table-column prop="bid" label="出价价格'"></el-table-column>
+												<el-table-column prop="auctionprice" label="出价价格">
+												</el-table-column>
+												<el-table-column prop="username" label="姓名">
+												</el-table-column>
 											</el-table>
 										</el-drawer>
 									</template>
@@ -48,52 +54,35 @@
 	<script>
 		var findResultAtione = new Vue({
 			data: {
-				dePte: [{
-					deptid: "1"
-				}, {
-					deptid: "2"
-				}],
+				dePte: [],
 				table: false,
-				emps: []
+				emps: [],
+				user: JSON.parse(window.sessionStorage.getItem("user"))
 			},
 			methods: {
-				deemps(emps) {
-					this.table = true;
-					this.emps = emps;
-				},
-				removeEmp(empid) {
+				goToUser(userid) {
 					let _this = this;
-					this.$confirm(`确认删除员工编号为:${empid}？`)
-						.then(_ => {
-							$.ajax({
-								type: "delete",
-								url: `http://127.0.0.1:8080/api/DepteServlets/emp/${empid}`,
-								dataType: "JSON",
-								success: function(data) {
-									console.log(data)
-									if(data.code == "200") {
-										//验证成功跳转页面
-										_this.$message({
-											message: data.msg,
-											type: 'success'
-										});
-										_this.goToDate();
-									} else if(data.code == "300") {
-										_this.$message({
-											message: data.msg,
-											type: 'success'
-										});
-										_this.table = false;
-									}
-									//关闭Drawer的方法   需要引用ref 然后调用closeDrawer()方法
-									_this.$refs.drawer.closeDrawer();
-								}
-							});
-						})
-						.catch(_ => {});
+					$.getJSON(`http://127.0.0.1:8080/api/AuctionRecords/Auctionrecord/user/${userid}`, (data) => {
+						console.log(data)
+						_this.dePte = data;
+					});
+				},
+				deemps(auctionid) {
+					this.table=true;
+					this.goToAuction(auctionid);				
+				},
+				goToAuction(auctionid) {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/AuctionRecords/Auctionrecord/user/auction/${auctionid}`, (data) => {
+						console.log(data)
+						_this.emps = data;
+					});
 				}
 			},
-			mounted() {}
+			mounted() {
+				console.log(this.user.userId)
+				this.goToUser(this.user.userId);
+			}
 		}).$mount(".findResultAtione");
 	</script>
 

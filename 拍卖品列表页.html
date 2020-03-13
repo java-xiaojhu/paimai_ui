@@ -3,12 +3,12 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>拍卖品列表页</title>
+		<title>拍卖品列表页.html</title>
 	</head>
 
 	<body>
-		<div class="AuctionItemApp" style="margin-top: 20px;">
-			<el-row :gutter="20" justify="center">
+		<div class="AuctionItemApp">
+			<el-row :gutter="20" justify="center" type="flex">
 				<el-col :span="3">
 					<div class="grid-content bg-purple"></div>
 				</el-col>
@@ -25,25 +25,25 @@
 									<el-input v-model="sizeForm.describe"></el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="8">
 								<el-form-item label="活动时间">
 									<el-col :span="11">
 										<el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 100%;"></el-date-picker>
 									</el-col>
 									<el-col class="line" :span="2">-</el-col>
 									<el-col :span="11">
-										<el-time-picker placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>
+										<el-date-picker type="date" placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>
 									</el-col>
 								</el-form-item>
 							</el-col>
-							<el-col :span="5">
+							<el-col :span="4">
 								<el-form-item label="起拍价">
 									<el-input v-model="sizeForm.startingPrice "></el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :span="2">
-								<el-form-item size="mini">
-									<el-button type="primary" @click="onSubmit">查询</el-button>
+							<el-col :span="4">
+								<el-form-item style="margin-left: 0px;" label-width="0px">
+									<el-button type="primary" @click="goToPage()">查询</el-button>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -60,23 +60,27 @@
 				<el-col :span="19">
 					<div class="">
 						<template>
-							<el-table :data="AuctionData" stripe style="width: 100%" border>
-								<el-table-column prop="date" label="日期">
+							<el-table :data="pageInfo.list" stripe style="width: 100%" border>
+								<el-table-column prop="auctionname" label="名称">
 								</el-table-column>
-								<el-table-column prop="name" label="姓名">
+								<el-table-column prop="auctiondesc" label="描述">
 								</el-table-column>
-								<el-table-column prop="address" label="地址">
+								<el-table-column prop="auctionstarttime" label="开始时间">
+								</el-table-column>
+								<el-table-column prop="auctionendtime" label="结束时间">
+								</el-table-column>
+								<el-table-column prop="auctionstartprice" label="起拍价">
 								</el-table-column>
 								<el-table-column label="操作">
 									<template slot-scope="temp">
-										<el-button size="mini" @click="goAuction('竞拍页.html')">竞拍</el-button>
+										<el-button type="primary" size="mini" @click="modifyPage(temp.row)">竞拍</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
 						</template>
 						<template>
-							<div class="block">
-								<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="100" layout="prev, pager, next, jumper" :total="1000">
+							<div class="block" v-if="listlength>0">
+								<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="pageInfo.pageSize" layout="prev, pager, next, jumper" :total="pageInfo.total">
 								</el-pagination>
 							</div>
 						</template>
@@ -88,53 +92,77 @@
 			</el-row>
 		</div>
 	</body>
+	<script type="text/javascript" src="js/index.js"></script>
 	<script>
 		var AuctionItemApp = new Vue({
 			data: {
+				currentPage3: 0,
+				listlength: 0,
 				sizeForm: {
 					name: '',
 					date1: '',
 					date2: '',
 					describe: '',
 					startingPrice: '',
-					currentPage4: 3
 				},
-				AuctionData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				pageInfo: {},
+				user: JSON.parse(window.sessionStorage.getItem("user")),
 			},
 			methods: {
-				onSubmit() {
-					console.log('submit!');
-				},
-				goAuction(url, goods) {
-					window.sessionStorage.setItem("goods", JSON.stringify(goods))
-					indexApp.showView(url);
-				},
+				//分页
 				handleSizeChange(val) {
 					console.log(`每页 ${val} 条`);
 				},
+				guanlilogin() {
+					location.href = `管理员登录页.html`;
+				},
 				handleCurrentChange(val) {
 					console.log(`当前页: ${val}`);
-				}
+					this.goToPage(val)
+				},
+				modifyPage(good) {
+					console.log(good)
+					window.sessionStorage.setItem("jinpai", JSON.stringify(good));
+					indexApp.showView(`竞拍页.html`);
+				},				
+				goToPage(n = "1", s = "6") {
+					var startingPrice = 0;
+					var date1 = null;
+					var date2 = null;
+					var name = null;
+					var describe = null;
+					if(this.sizeForm.date1 != '') {
+						date1 = this.crtTimeFtt(this.sizeForm.date1);
+					}
+					if(this.sizeForm.date2 != '') {
+						date2 = this.crtTimeFtt(this.sizeForm.date2);
+					}
+					if(this.sizeForm.startingPrice != '') {
+						startingPrice = this.sizeForm.startingPrice;
+					}
+					if(this.sizeForm.name != '') {
+						name = this.sizeForm.name;
+					}
+					if(this.sizeForm.describe != '') {
+						describe = this.sizeForm.describe;
+					}
+					console.log(`${name},${date1},${date2},${this.sizeForm.describe},${startingPrice}`);
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/Auctions/user/${n}/${s}/${name}/${date1}/${date2}/${describe}/${startingPrice}`, (data) => {
+						console.log(data)
+						_this.pageInfo = data;
+						_this.listlength = data.list.length;
+						_this.currentPage3 = _this.pageInfo.pageNum;
+					})
+				},
+				crtTimeFtt(val) {
+					var date = new Date(val);
+					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+				},
 			},
 			mounted() {
-
-			},
+				this.goToPage();
+			}
 		}).$mount(".AuctionItemApp");
 	</script>
 
